@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Подробное сравнение языков</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #0b0b18;
+      color: #e8e8f0;
+      padding: 2rem 1.5rem;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      font-weight: 700;
+      font-size: 2.8rem;
+      letter-spacing: -0.02em;
+      background: linear-gradient(135deg, #c7d0ff, #9b8aff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-align: center;
+      margin-bottom: 0.3rem;
+    }
+
+    .subhead {
+      text-align: center;
+      color: #8a8aaa;
+      font-size: 1.1rem;
+      margin-bottom: 2.5rem;
+      border-bottom: 1px solid #2a2a44;
+      padding-bottom: 1rem;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 1.8rem;
+    }
+
+    .card {
+      background: #14142a;
+      border-radius: 20px;
+      padding: 1.6rem 1.5rem 1.8rem;
+      border: 1px solid #2a2a4a;
+      transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card:hover {
+      transform: translateY(-6px);
+      border-color: #6b6bff;
+      box-shadow: 0 12px 40px rgba(80, 70, 255, 0.2);
+    }
+
+    /* цветовые акценты */
+    .card.ts { border-top: 4px solid #3178c6; }
+    .card.kt { border-top: 4px solid #7f52ff; }
+    .card.rs { border-top: 4px solid #dea584; }
+    .card.sw { border-top: 4px solid #f05138; }
+    .card.go { border-top: 4px solid #00add8; }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .card-header .icon {
+      font-size: 2.6rem;
+      line-height: 1;
+    }
+
+    .card-header .title {
+      font-size: 1.8rem;
+      font-weight: 700;
+    }
+
+    .card-header .badge {
+      font-size: 0.65rem;
+      background: #2a2a50;
+      padding: 0.2rem 0.8rem;
+      border-radius: 30px;
+      color: #b0b0dd;
+      font-weight: 500;
+      letter-spacing: 0.03em;
+      margin-left: 0.2rem;
+    }
+
+    .section {
+      margin-top: 0.9rem;
+      border-top: 1px solid #262640;
+      padding-top: 0.8rem;
+    }
+
+    .section h4 {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #8888bb;
+      margin-bottom: 0.3rem;
+      font-weight: 600;
+    }
+
+    .section p, .section ul {
+      font-size: 0.95rem;
+      line-height: 1.6;
+      color: #d4d4ec;
+    }
+
+    .section ul {
+      padding-left: 1.2rem;
+      margin: 0.2rem 0;
+    }
+
+    .section ul li {
+      margin-bottom: 0.15rem;
+    }
+
+    code {
+      background: #22224a;
+      padding: 0.15rem 0.6rem;
+      border-radius: 6px;
+      font-family: 'JetBrains Mono', 'Fira Code', monospace;
+      font-size: 0.85rem;
+      color: #c8c8ff;
+    }
+
+    .code-block {
+      background: #0f0f24;
+      padding: 0.6rem 1rem;
+      border-radius: 10px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      overflow-x: auto;
+      white-space: pre-wrap;
+      word-break: break-all;
+      border-left: 3px solid #6c63ff;
+      margin-top: 0.3rem;
+      color: #d0d0f0;
+    }
+
+    .difficulty {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      margin-top: 0.2rem;
+    }
+
+    .difficulty .bar {
+      flex: 1;
+      height: 6px;
+      background: #2a2a4a;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .difficulty .bar .fill {
+      height: 100%;
+      border-radius: 10px;
+    }
+
+    .fill-easy { width: 30%; background: #4caf50; }
+    .fill-medium { width: 55%; background: #ffb74d; }
+    .fill-hard { width: 80%; background: #f0625c; }
+
+    .tag {
+      display: inline-block;
+      background: #2a2a55;
+      padding: 0.1rem 0.6rem;
+      border-radius: 30px;
+      font-size: 0.7rem;
+      color: #b0b0e0;
+      margin-right: 0.3rem;
+    }
+
+    .footer-note {
+      margin-top: 3rem;
+      text-align: center;
+      color: #5a5a7a;
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 700px) {
+      body { padding: 1rem 0.8rem; }
+      .grid { grid-template-columns: 1fr; }
+      .card-header .title { font-size: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>🧠 Детальный гайд по языкам</h1>
+  <div class="subhead">Развёрнутые ответы на все вопросы + дополнительные разделы</div>
+
+  <div class="grid">
+
+    <!-- ========== TypeScript ========== -->
+    <div class="card ts">
+      <div class="card-header">
+        <span class="icon">📘</span>
+        <span class="title">TypeScript <span class="badge">JS-суперсет</span></span>
+      </div>
+
+      <div class="section">
+        <h4>1. Где используется?</h4>
+        <p><strong>Фронтенд:</strong> React, Angular, Vue (с TS-поддержкой). <strong>Бэкенд:</strong> Node.js, Deno, Bun. <strong>Десктоп:</strong> Electron, Tauri. <strong>Мобильные:</strong> React Native, NativeScript. <strong>Инструменты CLI</strong> (например, nx, angular-cli). Крупные проекты: VS Code, Slack, Airbnb.</p>
+      </div>
+
+      <div class="section">
+        <h4>2. Требования к установке</h4>
+        <p><strong>Node.js</strong> v16+ (или Deno, Bun). Менеджер пакетов: npm, yarn, pnpm. Компилятор <code>tsc</code> можно установить как глобально, так и локально.</p>
+      </div>
+
+      <div class="section">
+        <h4>3. Как установить</h4>
+        <div class="code-block">npm install -g typescript          # глобально
+npm install --save-dev typescript  # локально в проект</div>
+        <p style="margin-top:0.3rem;">Для Deno TS работает из коробки, для Bun — встроенная поддержка.</p>
+      </div>
+
+      <div class="section">
+        <h4>4. Что нужно, чтобы начать писать код?</h4>
+        <ul>
+          <li>Редактор: <strong>VS Code</strong> (родная поддержка) или WebStorm.</li>
+          <li>Файл <code>tsconfig.json</code> с настройками компиляции.</li>
+          <li>Команда <code>tsc</code> или использование сборщика (Vite, Webpack, esbuild).</li>
+          <li>Для отладки рекомендуется <code>@types/node</code> и <code>ts-node</code>.</li>
+        </ul>
+      </div>
+
+      <!-- Дополнительные блоки -->
+      <div class="section">
+        <h4>⭐ Ключевые особенности</h4>
+        <p>Статическая типизация с выведением типов, поддержка дженериков, декораторов, enum, утилитарных типов (Partial, Pick, Omit). Отличная интеграция с экосистемой JavaScript.</p>
+      </div>
+
+      <div class="section">
+        <h4>📦 Популярные фреймворки / библиотеки</h4>
+        <p><span class="tag">React</span><span class="tag">Angular</span><span class="tag">Vue</span><span class="tag">NestJS</span><span class="tag">Prisma</span><span class="tag">TypeORM</span></p>
+      </div>
+
+      <div class="section">
+        <h4>📝 Пример кода</h4>
+        <div class="code-block">function greet(name: string): string {
+  return `Hello, ${name}!`;
+}
+console.log(greet("TypeScript"));</div>
+      </div>
+
+      <div class="section">
+        <h4>📊 Сложность обучения</h4>
+        <div class="difficulty">
+          <span>Низкая (если знаешь JS)</span>
+          <div class="bar"><div class="fill fill-easy"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== Kotlin ========== -->
+    <div class="card kt">
+      <div class="card-header">
+        <span class="icon">🟣</span>
+        <span class="title">Kotlin <span class="badge">JVM / мультиплатформа</span></span>
+      </div>
+
+      <div class="section">
+        <h4>1. Где используется?</h4>
+        <p><strong>Android</strong> — официальный язык. <strong>Серверная разработка</strong> (Spring Boot, Ktor, Micronaut). <strong>Мультиплатформа</strong> (Kotlin Multiplatform): iOS, веб, десктоп. <strong>Скрипты</strong>, DSL для Gradle. Примеры: Google, Netflix, Uber.</p>
+      </div>
+
+      <div class="section">
+        <h4>2. Требования к установке</h4>
+        <p><strong>Java JDK</strong> 11+, предпочтительно OpenJDK или Oracle. Для Android-разработки нужен Android SDK. Рекомендуется IntelliJ IDEA (или Android Studio).</p>
+      </div>
+
+      <div class="section">
+        <h4>3. Как установить</h4>
+        <div class="code-block">sdk install kotlin          # через SDKMAN
+# или скачать с kotlinlang.org и добавить в PATH</div>
+        <p>Для Gradle-проектов достаточно добавить плагин в <code>build.gradle.kts</code>.</p>
+      </div>
+
+      <div class="section">
+        <h4>4. Что нужно, чтобы начать писать код?</h4>
+        <ul>
+          <li>IntelliJ IDEA / Android Studio (встроенная поддержка).</li>
+          <li>Или VS Code с плагином Kotlin Language.</li>
+          <li>Компилятор <code>kotlinc</code> и система сборки Gradle или Maven.</li>
+          <li>Создать проект: <code>gradle init</code> с выбором Kotlin.</li>
+        </ul>
+      </div>
+
+      <div class="section">
+        <h4>⭐ Ключевые особенности</h4>
+        <p>Null-безопасность, расширения, корутины (для асинхронности), интеллектуальное приведение типов, совместимость с Java (можно использовать Java-библиотеки).</p>
+      </div>
+
+      <div class="section">
+        <h4>📦 Популярные фреймворки / библиотеки</h4>
+        <p><span class="tag">Spring Boot</span><span class="tag">Ktor</span><span class="tag">Exposed</span><span class="tag">Room</span><span class="tag">Koin</span><span class="tag">Arrow</span></p>
+      </div>
+
+      <div class="section">
+        <h4>📝 Пример кода</h4>
+        <div class="code-block">fun greet(name: String): String = "Hello, $name!"
+fun main() {
+    println(greet("Kotlin"))
+}</div>
+      </div>
+
+      <div class="section">
+        <h4>📊 Сложность обучения</h4>
+        <div class="difficulty">
+          <span>Средняя (если знаешь Java)</span>
+          <div class="bar"><div class="fill fill-medium"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== Rust ========== -->
+    <div class="card rs">
+      <div class="card-header">
+        <span class="icon">🦀</span>
+        <span class="title">Rust <span class="badge">системный</span></span>
+      </div>
+
+      <div class="section">
+        <h4>1. Где используется?</h4>
+        <p><strong>Системное программирование</strong> (ОС, драйверы), <strong>WebAssembly</strong> (WASM), <strong>сетевые сервисы</strong> (Tokio, Actix), <strong>игровые движки</strong> (Bevy, Amethyst), <strong>встраиваемые системы</strong>, <strong>CLI-утилиты</strong> (ripgrep, exa). Используется в Firefox (часть движка), Dropbox, Discord.</p>
+      </div>
+
+      <div class="section">
+        <h4>2. Требования к установке</h4>
+        <p><strong>rustc</strong> и <strong>Cargo</strong> (менеджер пакетов). Для некоторых платформ нужен C-компилятор (gcc, clang) и системные библиотеки (например, OpenSSL).</p>
+      </div>
+
+      <div class="section">
+        <h4>3. Как установить</h4>
+        <div class="code-block">curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh</div>
+        <p>После установки выполнить <code>source ~/.cargo/env</code>. Обновление: <code>rustup update</code>.</p>
+      </div>
+
+      <div class="section">
+        <h4>4. Что нужно, чтобы начать писать код?</h4>
+        <ul>
+          <li>Редактор: VS Code с расширением <strong>rust-analyzer</strong> (рекомендуется) или IntelliJ Rust.</li>
+          <li>Создание проекта: <code>cargo new my_project</code>.</li>
+          <li>Сборка: <code>cargo build</code>, запуск: <code>cargo run</code>.</li>
+          <li>Дополнительно: <code>cargo check</code> для быстрой проверки типов.</li>
+        </ul>
+      </div>
+
+      <div class="section">
+        <h4>⭐ Ключевые особенности</h4>
+        <p>Безопасность памяти без сборщика мусора (владение, заимствование, времена жизни). Высокая производительность, отсутствие гонок данных, удобный менеджер пакетов Cargo.</p>
+      </div>
+
+      <div class="section">
+        <h4>📦 Популярные фреймворки / библиотеки</h4>
+        <p><span class="tag">Tokio</span><span class="tag">Actix</span><span class="tag">Serde</span><span class="tag">Diesel</span><span class="tag">Bevy</span><span class="tag">Clap</span></p>
+      </div>
+
+      <div class="section">
+        <h4>📝 Пример кода</h4>
+        <div class="code-block">fn greet(name: &str) -> String {
+    format!("Hello, {}!", name)
+}
+fn main() {
+    println!("{}", greet("Rust"));
+}</div>
+      </div>
+
+      <div class="section">
+        <h4>📊 Сложность обучения</h4>
+        <div class="difficulty">
+          <span>Высокая (новая парадигма)</span>
+          <div class="bar"><div class="fill fill-hard"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== Swift ========== -->
+    <div class="card sw">
+      <div class="card-header">
+        <span class="icon">🐦</span>
+        <span class="title">Swift <span class="badge">Apple / сервер</span></span>
+      </div>
+
+      <div class="section">
+        <h4>1. Где используется?</h4>
+        <p><strong>iOS / macOS / watchOS / tvOS</strong> — основная экосистема. <strong>Серверная разработка</strong> (Vapor, Hummingbird). <strong>Системные скрипты</strong>. Используется в приложениях Apple, а также в IBM, Lyft, Slack.</p>
+      </div>
+
+      <div class="section">
+        <h4>2. Требования к установке</h4>
+        <p>На macOS — <strong>Xcode</strong> (компилятор + SDK). На Linux — Swift toolchain, а также ICU, clang, libicu-dev.</p>
+      </div>
+
+      <div class="section">
+        <h4>3. Как установить</h4>
+        <div class="code-block">macOS: xcode-select --install   # или скачать Xcode из App Store
+Linux: скачать .tar.gz с swift.org, распаковать, добавить в PATH</div>
+      </div>
+
+      <div class="section">
+        <h4>4. Что нужно, чтобы начать писать код?</h4>
+        <ul>
+          <li>Xcode — полноценная среда со встроенным редактором, отладчиком.</li>
+          <li>Либо VS Code с расширением SourceKit-LSP.</li>
+          <li>Компилятор <code>swiftc</code> и менеджер пакетов <code>swift package</code>.</li>
+          <li>Создание проекта: <code>swift package init --type executable</code>.</li>
+        </ul>
+      </div>
+
+      <div class="section">
+        <h4>⭐ Ключевые особенности</h4>
+        <p>Безопасность типов, опционалы, замыкания, протоколы, расширения, обобщения. Современный синтаксис с акцентом на читаемость. SwiftUI — декларативный UI-фреймворк.</p>
+      </div>
+
+      <div class="section">
+        <h4>📦 Популярные фреймворки / библиотеки</h4>
+        <p><span class="tag">SwiftUI</span><span class="tag">UIKit</span><span class="tag">Vapor</span><span class="tag">Alamofire</span><span class="tag">Realm</span><span class="tag">Combine</span></p>
+      </div>
+
+      <div class="section">
+        <h4>📝 Пример кода</h4>
+        <div class="code-block">func greet(name: String) -> String {
+    return "Hello, \(name)!"
+}
+print(greet(name: "Swift"))</div>
+      </div>
+
+      <div class="section">
+        <h4>📊 Сложность обучения</h4>
+        <div class="difficulty">
+          <span>Средняя</span>
+          <div class="bar"><div class="fill fill-medium"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== Golang ========== -->
+    <div class="card go">
+      <div class="card-header">
+        <span class="icon">🐹</span>
+        <span class="title">Golang <span class="badge">бэкенд / облака</span></span>
+      </div>
+
+      <div class="section">
+        <h4>1. Где используется?</h4>
+        <p><strong>Серверные приложения</strong>, микросервисы, <strong>облачные инструменты</strong> (Kubernetes, Docker, Terraform), <strong>CLI-утилиты</strong>, <strong>сетевые сервисы</strong> с высокой конкурентностью. Примеры: Google, Uber, Twitch, Dropbox.</p>
+      </div>
+
+      <div class="section">
+        <h4>2. Требования к установке</h4>
+        <p>Официальный дистрибутив Go для Windows, macOS, Linux. Не требует дополнительных зависимостей (кроме стандартной библиотеки).</p>
+      </div>
+
+      <div class="section">
+        <h4>3. Как установить</h4>
+        <div class="code-block"># скачать с go.dev/dl и запустить установщик
+# или через менеджер пакетов:
+brew install go          # macOS
+apt install golang       # Linux
+choco install golang     # Windows</div>
+      </div>
+
+      <div class="section">
+        <h4>4. Что нужно, чтобы начать писать код?</h4>
+        <ul>
+          <li>Редактор: VS Code с плагином Go (от Google) или GoLand.</li>
+          <li>Инициализация модуля: <code>go mod init example.com/hello</code>.</li>
+          <li>Сборка: <code>go build</code>, запуск: <code>go run</code>.</li>
+          <li>Инструменты: <code>gofmt</code> (форматирование), <code>go vet</code> (анализ), <code>go test</code> (тесты).</li>
+        </ul>
+      </div>
+
+      <div class="section">
+        <h4>⭐ Ключевые особенности</h4>
+        <p>Простота синтаксиса, встроенная конкурентность (горутины, каналы), быстрое время компиляции, статическая компиляция в один бинарный файл. Отличная производительность и низкое потребление памяти.</p>
+      </div>
+
+      <div class="section">
+        <h4>📦 Популярные фреймворки / библиотеки</h4>
+        <p><span class="tag">Gin</span><span class="tag">Echo</span><span class="tag">Fiber</span><span class="tag">Gorm</span><span class="tag">Cobra</span><span class="tag">Viper</span></p>
+      </div>
+
+      <div class="section">
+        <h4>📝 Пример кода</h4>
+        <div class="code-block">package main
+import "fmt"
+func greet(name string) string {
+    return fmt.Sprintf("Hello, %s!", name)
+}
+func main() {
+    fmt.Println(greet("Go"))
+}</div>
+      </div>
+
+      <div class="section">
+        <h4>📊 Сложность обучения</h4>
+        <div class="difficulty">
+          <span>Низкая (простой синтаксис)</span>
+          <div class="bar"><div class="fill fill-easy"></div></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer-note">
+    ⚡ Каждый язык уникален — выбирайте под свои задачи и предпочтения.
+  </div>
+</div>
+</body>
+</html>
